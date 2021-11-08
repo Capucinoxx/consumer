@@ -3,6 +3,8 @@ package consumer
 import (
 	"fmt"
 	"net/http"
+
+	"github.com/Capucinoxx/consumer/middleware"
 )
 
 // Method est une méthode du protocole
@@ -25,13 +27,6 @@ type Route struct {
 
 // Routes représente une collection de routes
 type Routes []Route
-
-// Middleware fonction faisant la passerelle entre la requête client et la logique
-// métier de la requête
-type Middleware func(http.HandlerFunc) http.HandlerFunc
-
-// Middlewares représente une collection de middleware
-type Middlewares []Middleware
 
 // router représentation internet du router.
 // À cette struct sera greffé les différentes fonctionnalités du corsp de la logique
@@ -60,7 +55,7 @@ func PrintMethod(pattern string, methods ...string) {
 
 // Router construit une instance de router en assigant les routes en paramèetres à la
 // structure interne
-func Router(routes Routes, middlewares ...Middleware) *router {
+func Router(routes Routes, middlewares ...middleware.Middleware) *router {
 	r := &router{
 		make(map[string]map[Method]Route),
 		middlewares,
