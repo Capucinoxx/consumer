@@ -37,7 +37,7 @@ type router struct {
 	routes map[string]map[Method]Route
 
 	// ensemble des middlewares du service
-	middlewares Middlewares
+	middlewares middleware.Middlewares
 
 	// fonction permettant l'affichage des différentes routes lors de la consommation des
 	// différentes routes
@@ -102,7 +102,7 @@ func (r *router) DeleteByPattern(pattern string) *router {
 	return r
 }
 
-func (r *router) AddMiddlewares(middlewares ...Middleware) *router {
+func (r *router) AddMiddlewares(middlewares ...middleware.Middleware) *router {
 	r.middlewares = append(r.middlewares, middlewares...)
 
 	return r
@@ -148,7 +148,7 @@ func (r *router) Consumer(prefix string) {
 
 			http.HandleFunc(prefix+pattern, handler)
 
-			m := make([]string, len(methods))
+			m := make([]string, len(methods)-1)
 			for method := range methods {
 				m = append(m, string(method))
 			}
