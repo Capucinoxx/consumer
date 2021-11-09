@@ -111,6 +111,7 @@ func (r *router) DeleteByPattern(pattern string) *router {
 	return r
 }
 
+// AddMiddlewares ajout d'un ou plusieurs middlewares au router
 func (r *router) AddMiddlewares(middlewares ...middleware.Middleware) *router {
 	r.middlewares = append(r.middlewares, middlewares...)
 
@@ -121,6 +122,14 @@ func (r *router) AddMiddlewares(middlewares ...middleware.Middleware) *router {
 // consommation des routes
 func (r *router) SetPrintMethod(printMethod func(pattern string, methods ...string)) *router {
 	r.printRoute = printMethod
+
+	return r
+}
+
+// WithoutLogger retire de la liste des middlewares utilisés le Logger. Comme ce dernier
+// est utilisé par défault, utiliser cette fonction pour retirer le Logger.
+func (r *router) WithoutLogger() *router {
+	r.middlewares = r.middlewares[1:]
 
 	return r
 }
