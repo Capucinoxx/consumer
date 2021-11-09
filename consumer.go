@@ -54,8 +54,17 @@ func PrintMethod(pattern string, methods ...string) {
 }
 
 // Router construit une instance de router en assigant les routes en paramèetres à la
-// structure interne
+// structure interne.
+//
+// De base, le Router ne comporte aucune routeet un seul middleware, soit
+// middleware.Logger permettant de calculer et d'afficher le temps pris pour
+// exécuter la requête utilisateur
 func Router(routes Routes, middlewares ...middleware.Middleware) *router {
+	// ajout du middleware Logger au début
+	middlewares = append(middlewares, nil)
+	copy(middlewares[1:], middlewares)
+	middlewares[0] = middleware.Logger
+
 	r := &router{
 		make(map[string]map[Method]Route),
 		middlewares,
