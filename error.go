@@ -5,10 +5,12 @@ import (
 	"fmt"
 )
 
+// consumerError est une représentation d'erreur utilisée
+// par le router
 type consumerError struct {
-	Cause  error
-	Detail string
-	Status int
+	Cause  error  `json:"-"`
+	Detail string `json:"detail"`
+	Status int    `json:"-"`
 }
 
 // Error retournes une chaine de caractères représentant l'erreur
